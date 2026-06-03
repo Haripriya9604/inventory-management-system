@@ -4,16 +4,21 @@ from fastapi import HTTPException
 from app.models.product import Product
 from app.schemas.product import ProductCreate, ProductResponse
 from app.database.dependencies import get_db
-
+from app.core.dependencies import (
+    get_current_user
+)
 router = APIRouter(
     prefix="/products",
     tags=["Products"]
 )
 
-@router.post("/", response_model=ProductResponse)
+@router.post("/")
 def create_product(
     product: ProductCreate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user=Depends(
+        get_current_user
+    )
 ):
     new_product = Product(
         name=product.name,
