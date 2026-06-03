@@ -19,10 +19,15 @@ from app.core.auth import (
     create_access_token
 )
 
+from app.core.dependencies import (
+    get_current_user
+)
+
 router = APIRouter(
     prefix="/auth",
     tags=["Authentication"]
 )
+
 
 @router.post("/register")
 def register_user(
@@ -31,10 +36,7 @@ def register_user(
 ):
     existing_user = (
         db.query(User)
-        .filter(
-            User.username ==
-            user.username
-        )
+        .filter(User.username == user.username)
         .first()
     )
 
@@ -55,10 +57,12 @@ def register_user(
 
     db.add(new_user)
     db.commit()
+    db.refresh(new_user)
 
     return {
         "message": "User registered successfully"
     }
+
 
 @router.post("/login")
 def login_user(
@@ -67,10 +71,7 @@ def login_user(
 ):
     db_user = (
         db.query(User)
-        .filter(
-            User.username ==
-            user.username
-        )
+        .filter(User.username == user.username)
         .first()
     )
 
@@ -101,3 +102,11 @@ def login_user(
         "token_type": "bearer"
     }
 
+
+@router.get("/me")
+def get_me(
+    current_user=Depends(
+        get_current_user
+    )
+):
+    return current_user
