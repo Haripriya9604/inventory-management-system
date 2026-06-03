@@ -111,3 +111,29 @@ def create_invoice(
         "gst": gst,
         "total": total
     }
+
+@router.get("/")
+def get_invoices(
+    db: Session = Depends(get_db)
+):
+    return db.query(Invoice).all()
+
+@router.get("/{invoice_id}")
+def get_invoice(
+    invoice_id: int,
+    db: Session = Depends(get_db)
+):
+    invoice = (
+        db.query(Invoice)
+        .filter(Invoice.id == invoice_id)
+        .first()
+    )
+
+    if not invoice:
+        raise HTTPException(
+            status_code=404,
+            detail="Invoice not found"
+        )
+
+    return invoice
+
