@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 class ProductCreate(BaseModel):
     name: str
@@ -8,7 +9,7 @@ class ProductCreate(BaseModel):
     selling_price: float
     quantity: int
     reorder_level: int
-    supplier_id: int
+    supplier_id: Optional[int] = None
 
 
 class ProductResponse(ProductCreate):
