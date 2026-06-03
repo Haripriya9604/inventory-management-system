@@ -8,6 +8,7 @@ class ProductCreate(BaseModel):
     selling_price: float
     quantity: int
     reorder_level: int
+    supplier_id: int
 
 
 class ProductResponse(ProductCreate):

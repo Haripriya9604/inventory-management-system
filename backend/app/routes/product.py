@@ -22,7 +22,8 @@ def create_product(
         purchase_price=product.purchase_price,
         selling_price=product.selling_price,
         quantity=product.quantity,
-        reorder_level=product.reorder_level
+        reorder_level=product.reorder_level,
+        supplier_id=product.supplier_id
     )
 
     db.add(new_product)

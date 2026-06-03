@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy import Column, Integer, String, Float, ForeignKey
 from app.database.base import Base
 
 class Product(Base):
@@ -19,3 +19,8 @@ class Product(Base):
     quantity = Column(Integer, default=0)
 
     reorder_level = Column(Integer, default=10)
+
+    supplier_id = Column(
+        Integer,
+        ForeignKey("suppliers.id")
+    )
